@@ -1,0 +1,33 @@
+<% for (let field of this.model.fields) { %>
+<% if (field.type == "image") { %>
+@if(isset($<$ this.model.getName() $>))
+    @if($<$ this.model.getName() $>-><$ field.getName() $>)
+        <div class="form-group">
+            {{ Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') }}
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 text-left">
+            <img src="{{ asset($<$ this.model.getName() $>->getImagePath('<$ field.getName() $>', 'thumb')) }}" width="150" style="margin: 10px">
+        </div>
+    @endif
+@endif
+
+<% } else if (field.type == "file") { %>
+<div class="form-group">
+    {{ Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') }}
+</div>
+<div class="form-group col-xs-12 col-sm-12 text-left">
+    @if(isset($<$ this.model.getName() $>))
+        @if($<$ this.model.getName() $>-><$ field.getName() $>)
+            <div><a href="{{ asset($product->getFilePath('<$ field.getName() $>')) }}" target="_blank">View File</a></div>
+        @endif
+    @endif
+</div>
+
+<% } else { %>
+<div class="form-group">
+    {{ Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') }}
+    <p>{{ $<$ this.model.getName() $>-><$ field.getName() $> }}</p>
+</div>
+
+<% } %>
+<% } %>

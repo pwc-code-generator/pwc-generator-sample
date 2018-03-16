@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\User;
+use App\Models\<$ this.model.getNameCapitalized() $>;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class <$ this.model.getNameCapitalized() $>Policy
+{
+    use HandlesAuthorization;
+
+    public function before($user, $ability)
+    {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+    }
+
+    /**
+     * Determine whether the user can list the model.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function list(User $user)
+    {
+        return $user->hasPermissionTo('list <$ this.model.getNamePlural() $>');
+    }
+
+    /**
+     * Determine whether the user can view the <$ this.model.getName() $>.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\<$ this.model.getNameCapitalized() $>  $<$ this.model.getName() $>
+     * @return mixed
+     */
+    public function view(User $user, <$ this.model.getNameCapitalized() $> $<$ this.model.getName() $>)
+    {
+        return $user->hasPermissionTo('view <$ this.model.getNamePlural() $>');
+    }
+
+    /**
+     * Determine whether the user can create <$ this.model.getNamePlural() $>.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+        return $user->hasPermissionTo('create <$ this.model.getNamePlural() $>');
+    }
+
+    /**
+     * Determine whether the user can update the <$ this.model.getName() $>.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\<$ this.model.getNameCapitalized() $>  $<$ this.model.getName() $>
+     * @return mixed
+     */
+    public function update(User $user, <$ this.model.getNameCapitalized() $> $<$ this.model.getName() $>)
+    {
+        return $user->hasPermissionTo('update <$ this.model.getNamePlural() $>');
+    }
+
+    /**
+     * Determine whether the user can delete the <$ this.model.getName() $>.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\<$ this.model.getNameCapitalized() $>  $<$ this.model.getName() $>
+     * @return mixed
+     */
+    public function delete(User $user, <$ this.model.getNameCapitalized() $> $<$ this.model.getName() $>)
+    {
+        return $user->hasPermissionTo('delete <$ this.model.getNamePlural() $>');
+    }
+}

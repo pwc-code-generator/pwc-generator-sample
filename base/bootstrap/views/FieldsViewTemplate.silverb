@@ -1,0 +1,111 @@
+<# Model foreign keys #>
+<% for (let relationship of this.model.belongsToRelationships) { %>
+<div class="form-group col-xs-12 col-sm-12">
+    {!! Form::label('<$ relationship.getForeignKeyName() $>', '<$ relationship.relatedModel.getDescription() $>') !!} <% if (relationship.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::select('<$ relationship.getForeignKeyName() $>', $<$ relationship.relatedModel.getNamePlural() $>, null, ['class' => 'form-control'<% if (relationship.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+<% } %>
+
+<% for (let field of this.model.fields) { %>
+<% if (field.element == "text") { %>
+<div class="form-group col-xs-12 col-sm-6">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::text('<$ field.getName() $>', <% if (field.value) { %>'<$ field.value $>'<% } else { %>null<% } %>, ['class' => 'form-control'<% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+
+<% } else if (field.element == "email") { %>
+<div class="form-group col-xs-12 col-sm-6">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::email('<$ field.getName() $>', <% if (field.value) { %>'<$ field.value $>'<% } else { %>null<% } %>, ['class' => 'form-control'<% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+
+<% } else if (field.element == "textarea") { %>
+<div class="form-group col-xs-12 col-sm-12">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::textarea('<$ field.getName() $>', <% if (field.value) { %>'<$ field.value $>'<% } else { %>null<% } %>, ['class' => 'form-control'<% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+
+<% } else if (field.element == "number") { %>
+<div class="form-group col-xs-12 col-sm-6">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::number('<$ field.getName() $>', <% if (field.value) { %>'<$ field.value $>'<% } else { %>null<% } %>, ['class' => 'form-control'<% if (field.type == "decimal") { %>, 'step' => '0.1'<% } %><% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+
+<% } else if (field.element == "password") { %>
+<div class="form-group col-xs-12 col-sm-12">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::password('<$ field.getName() $>', ['class' => 'form-control'<% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+
+<% } else if (field.element == "select") { %>
+<div class="form-group col-xs-12 col-sm-6">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::select('<$ field.getName() $>', [<% for (let item of field.items) { %>'<$ item.getValue() $>' => '<$ item.getLabel() $>',<% } %>], null, ['class' => 'form-control'<% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+
+<% } else if (field.element == "checkbox") { %>
+<div class="form-group col-xs-12 col-sm-6">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::hidden('<$ field.getName() $>', 0) !!}
+    {!! Form::checkbox('<$ field.getName() $>', 1) !!}
+</div>
+
+<% } else if (field.element == "date") { %>
+<div class="form-group col-xs-12 col-sm-6">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::date('<$ field.getName() $>', <% if (field.value) { %>'<$ field.value $>'<% } else { %>null<% } %>, ['class' => 'form-control'<% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+
+<% } else if (field.element == "datetime") { %>
+<div class="form-group col-xs-12 col-sm-6">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::date('<$ field.getName() $>', <% if (field.value) { %>'<$ field.value $>'<% } else { %>null<% } %>, ['class' => 'form-control'<% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+
+<% } else if (field.element == "file") { %>
+<% if (field.type == "image") { %>
+<div class="form-group col-xs-12 col-sm-12 text-left">
+    @if(isset($<$ this.model.getName() $>))
+        @if($<$ this.model.getName() $>-><$ field.getName() $>)
+            <img src="{{ asset($<$ this.model.getName() $>->getImagePath('<$ field.getName() $>', 'thumb')) }}" width="150" style="margin: 10px">
+        @endif
+    @endif
+</div>
+
+<div class="form-group col-xs-12">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    {!! Form::file('<$ field.getName() $>', ['accept' => 'image/*'<% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+<% } else { %>
+<div class="form-group col-xs-12">
+    {!! Form::label('<$ field.getName() $>', '<$ field.getLabel() $>') !!} <% if (field.isRequired()) { %><b class="asterisk required">*</b><% } %>
+    @if(isset($<$ this.model.getName() $>))
+        @if($<$ this.model.getName() $>-><$ field.getName() $>)
+            <div><a href="{{ asset($product->getFilePath('<$ field.getName() $>')) }}" target="_blank">View File</a></div>
+        @endif
+    @endif
+    {!! Form::file('<$ field.getName() $>', [<% if (field.hasMimeTypes()) { %>'accept' => '<$ field.getMimeTypesAsString() $>'<% } %><% if (field.isRequired()) { %>, 'required' => 'required'<% } %>]) !!}
+</div>
+<% } %>
+
+<% } %>
+<% } %>
+
+<% for (let relationship of this.model.hasManyRelationships) { %>
+<% if (relationship.element == "simple-datagrid") { %>
+<div class="col-sm-12">
+    <h4><$ relationship.relatedModel.getDescriptionPlural() $></h4>
+
+    <<$ relationship.getNamePluralSlugCase() $>
+        form="<$ this.model.getName() $>-form" 
+        <% for (let subRelationship of relationship.relatedModel.belongsToRelationships) { %>
+        <% if (subRelationship.element) { %>
+        <$ subRelationship.getAliasPluralSlugCase() $>="{{ isset($<$ subRelationship.getAliasPlural() $>) ? $<$ subRelationship.getAliasPlural() $> : '[]' }}"
+        <% } %>
+        <% } %>
+        items="{{ isset($<$ this.model.getName() $>) ? $<$ this.model.getName() $>-><$ relationship.getAliasPlural() $> : '[]' }}">
+    </<$ relationship.getNamePluralSlugCase() $>>
+</div>
+<% } %>
+
+<% } %>

@@ -1,0 +1,181 @@
+<style>
+    .add-button {
+        color: #3498db;
+        cursor: pointer;
+    }
+
+    .remove-button {
+        cursor: pointer;
+        color: #e74c3c; 
+        font-size: 25px; 
+        font-weight: bold;
+    }
+</style>
+
+<template>
+    <div class="table-responsive">
+        <table class="table table-bordered table-form">
+            <thead>
+                <tr>
+                    <# Relationships #>
+                    <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
+                    <# Test if the relationship has an element and the related model is different from the main model #>
+                    <% if(subRelationship.element && (this.model.getNameCapitalized() != subRelationship.relatedModel.getNameCapitalized())) { %>
+                    <th><$ subRelationship.relatedModel.getDescription() $></th>
+                    <% } %>
+                    <% } %>
+                    
+                    <# Model fields #>
+                    <% for (let field of this.relationship.relatedModel.fields) { %>
+                    <th><$ field.getLabel() $></th>
+                    <% } %>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(<$ this.relationship.getAlias() $>, index) in list">
+                    <# Relationships #>
+                    <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
+                    <# Test if the relationship has an element and the related model is different from the main model #>
+                    <% if(subRelationship.element && (this.model.getNameCapitalized() != subRelationship.relatedModel.getNameCapitalized())) { %>
+                    <td>
+                        <select class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ subRelationship.getForeignKeyName() $>" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ subRelationship.getForeignKeyName() $>]'">
+                        <option value="">---</option>
+                        <option v-for="<$ subRelationship.relatedModel.getName() $> in list_<$ subRelationship.relatedModel.getNamePlural() $>" v-bind:value="<$ subRelationship.relatedModel.getName() $>.id">
+                            {{ <$ subRelationship.relatedModel.getName() $>.<$ subRelationship.getDisplayField() $> }}
+                        </option>
+                        </select>
+                    </td>
+                    <% } %>
+                    <% } %>
+
+                    <% for (let field of this.relationship.relatedModel.fields) { %>
+                    <td>
+                    <% if(field.element == "text") { %>
+                    <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="text" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"
+                    <% if(field.value) { %> value="<$ field.getValue() $>"<% } %><% if(field.isRequired) { %> required="required"<% } %>>
+
+                    <% } else if(field.element == "email") { %>
+                    <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="email" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"
+                    <% if(field.value) { %> value="<$ field.getValue() $>"<% } %><% if(field.isRequired) { %> required="required"<% } %>>
+
+                    <% } else if(field.element == "textarea") { %>
+                    <textarea :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"
+                    <% if(field.isRequired) { %> required="required"<% } %>><% if(field.value) { %>{{value}}<% } %></textarea>
+
+                    <% } else if(field.element == "number") { %>
+                    <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="number" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"<% if(field.value) { %> value="<$ field.getValue() $>"<% } %><% if(field.isRequired) { %> required="required"<% } %><% if(field.type == "decimal") { %> step="0.1"<% } %>>
+
+                    <% } else if(field.element == "password") { %>
+                    <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="password" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"
+                    <% if(field.isRequired) { %> required="required"<% } %>>
+
+                    <% } else if(field.element == "select") { %>
+                    <select :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"
+                    <% if(field.isRequired) { %> required="required"<% } %>>
+                        <option value="">---</option>
+                        <% for (let item of field.items) { %>
+                        <option value="<$ item.getValue() $>"><$ item.getLabel() $></option>
+                        <% } %>
+                    </select>
+
+                    <% } else if(field.element == "checkbox") { %>
+                    <div>
+                        <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="checkbox" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"
+                    value="1"<% if(field.isRequired) { %> required="required"<% } %>>
+                    </div>
+
+                    <% } else if(field.element == "date") { %>
+                    <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="date" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"
+                    <% if(field.value) { %> value="<$ field.getValue() $>"<% } %><% if(field.isRequired) { %> required="required"<% } %>>
+
+                    <% } else if(field.element == "datetime") { %>
+                    <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="date" class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ field.getName() $>"
+                    <% if(field.value) { %> value="<$ field.getValue() $>"<% } %><% if(field.isRequired) { %> required="required"<% } %>>
+
+                    <% } else if(field.element == "file") { %>
+                    <% if(field.type == "image") { %>
+                    <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="file" 
+                    <% if(field.isRequired) { %> required="required"<% } %> accept="image/*">
+                    
+                    <% } else { %>
+                    <div class="form-group col-xs-12">
+                        <input :form="form" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ field.getName() $>]'" type="file" 
+                    <% if(field.isRequired) { %> required="required"<% } %> <% if(field.hasMimeTypes()) { %>accept="<$ field.getMimeTypes() $>"<% } %>>
+                    </div>
+                    <% } %>
+
+                    <% } %>
+                    </td>
+                    <% } %>
+                    <td class="text-center">
+                        <span @click="remove(index)" class="remove-button">&times;</span>
+                    </td>    
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="100%">
+                        <span @click="addLine" class="add-button">+ Add Item</span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: [
+            'form', 
+            'items',
+            <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
+            <% if(subRelationship.element) { %>
+            '<$ subRelationship.getAliasPlural() $>',
+            <% } %>
+            <% } %>
+        ],
+
+        data () {
+            return {
+                list: [],
+                <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
+                <% if(subRelationship.element) { %>
+                list_<$ subRelationship.getAliasPlural() $>: [],
+                <% } %>
+                <% } %>
+            }
+        },
+
+        mounted () {
+            this.list = JSON.parse(this.items);
+            <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
+            <% if(subRelationship.element) { %>
+            this.list_<$ subRelationship.getAliasPlural() $> = JSON.parse(this.<$ subRelationship.getAliasPlural() $>);
+            <% } %>
+            <% } %>
+        },
+
+        methods: {
+            addLine: function() {
+                let lineData = {
+                    <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
+                    <% if(subRelationship.element) { %>
+                    <$ subRelationship.getForeignKeyName() $>: '',
+                    <% } %>
+                    <% } %>
+                    <% for (let field of this.relationship.relatedModel.fields) { %>
+                    <$ field.getName() $>: '',
+                    <% } %>
+                };
+
+                this.list.push(lineData);
+            },
+
+            remove: function(index) {
+                if(confirm('Are you sure to delete this item?'))
+                    Vue.delete(this.list, index);
+            }
+        }
+    }
+</script>
