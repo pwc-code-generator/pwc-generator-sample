@@ -154,3 +154,23 @@ The *field* object has some methods to help the code generation. These methods c
 
 Method | Description
 ------ | -----------
+```getName()```|Gets the field name
+```getLabel()```|Gets the field label
+```getType()```|Gets the field type. Eg: ```string, integer, decimal, file, image, etc```
+```getSize()```|Gets the field size, or null if is not defined
+```getValidation()```|Gets the field validation as javascript array
+```getValidationAsString()```|Gets the validation formatted as [Laravel Validation Syntax](https://laravel.com/docs/5.6/validation)
+```getElement()```|Gets the visual element that represents the field, Eg: text, number, file, etc. Can be false for fields that is not visually represented on the CRUD.
+```hasDefault()```|Returns if the field has a default value
+```getDefault()```|Gets the default value for the field
+```isInList()```|Returns if the field can be showed on the lists
+```isSearchable()```|Returns if the field is searchable, for database searchs
+```getItems()```|Returns field itens. It can be used, for example, in fields with type 'Enum', tha has multiple values on database
+```getValue()```|Returns the default value showed on the CRUD views. It is like getDefault(), but can be used for view defaults if the database default is different from view default value.
+```isFileField()```|Returns true if the field is of the type **file** or **image**
+```isImageField()```|Returns true if the field is of the type **image**
+```hasMimeTypes()```|Returns if the field has defined mimetypes
+```getMimeTypes()```|Gets the field mimeTypes as array
+```getMimeTypesAsString()```|Gets the field mimeTypes as string
+```isRequired()```|Returns if the field has 'required' validation
+```getDefaultElement()```|IMPORTANT: Returns the default visual element based on the type, Eg: text => textarea, integer => number, image => file
