@@ -79,7 +79,7 @@ testDependencies() {
 ```
 
 Method | Description
-- | -
+------ | -----------
 testDependency(dependency, message (*optional*)) | Test if the system has a dependency installed. Eg: ```utils.testDependency('git')```. Will throw an exception if the system doesn't have the dependency. The second argument is to customize the default message showed on the exception.
 executeCommand(command, callback (*optional*)) | Executes system commands like ``` git clone ... ```, ``` composer install ```, etc. You can use the callback to make next tasks after the execution.
 goToFolder(folder) | Go to a specific folder. It is like to ```cd /folder``` command.
