@@ -152,6 +152,10 @@ Method | Description
 
 The *field* object has some methods to help the code generation. These methods can be called inside a [SilverB](https://github.com/pwc-code-generator/silverb-template-engine) template too:
 
+```JavaScript
+console.log(field.getValidation());
+```
+
 Method | Description
 ------ | -----------
 ```getName()```|Gets the field name
