@@ -60,6 +60,8 @@ You can see a simple but well working example of generator [here](https://github
 
 It's only it. You can write the remaining code as you want. PWC will offer some tools to help you with code generation. See it below.
 
+**IMPORTANT:** If you are creating a new generator, please include it on the [PWC Readme](https://github.com/pwc-code-generator/pwc), on the section *Generators*, to help pwc users find your generator.
+
 ## PWC Tools for Generator
 
 PWC offers some methods that can help you to make your generators with practicality. Let's see these methods:
