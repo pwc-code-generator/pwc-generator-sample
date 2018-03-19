@@ -62,6 +62,8 @@ It's only it. You can write the remaining code as you want. PWC will offer some 
 
 **IMPORTANT:** If you are creating a new generator, please include it on the [PWC Readme](https://github.com/pwc-code-generator/pwc), on the section *Generators*, to help pwc users find your generator.
 
+We recommend that your generator name starts with: **pwc-generator-**. Eg: ```pwc-generator-laravel55```, ```pwc-generator-django-vuejs```, ```pwc-generator-rails-react```, etc. It can help the users to find your generators too.
+
 ## PWC Tools for Generator
 
 PWC offers some methods that can help you to make your generators with practicality. Let's see these methods:
